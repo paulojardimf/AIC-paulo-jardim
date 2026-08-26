@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIC | Direcionamento Estratégico + PRD Inicial — Governança de IA para Incorporadoras</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #000;
+      --fg: #fff;
+      --muted: #a3a3a3;
+      --line: #1f1f1f;
+      --soft: #141414;
+      --soft-2: #0d0d0d;
+      --accent: #ffffff;
+      --warn: #f4b400;
+      --good: #79c97a;
+      --blue: #8eb7ff;
+      --red: #e57f7f;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: "Montserrat", -apple-system, system-ui, sans-serif;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      scroll-behavior: smooth;
+    }
+    body { overflow-x: hidden; }
+    .layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 56px;
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+    .sidebar {
+      position: sticky;
+      top: 0;
+      align-self: start;
+      height: 100vh;
+      overflow-y: auto;
+      padding: 28px 16px 28px 0;
+      border-right: 1px solid var(--line);
+      font-size: .88rem;
+    }
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--line); }
+    .brand-mini {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 18px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+      font-weight: 700;
+      letter-spacing: .04em;
+      font-size: .78rem;
+      text-transform: uppercase;
+    }
+    .brand-mini img { width: 28px; height: 28px; border-radius: 4px; }
+    .toc { list-style: none; padding: 0; margin: 0; }
+    .toc li { padding: 2px 0; }
+    .toc a {
+      display: block;
+      padding: 8px 12px;
+      color: var(--muted);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      border-radius: 0 2px 2px 0;
+      transition: all .15s ease;
+    }
+    .toc a:hover, .toc a.active {
+      color: var(--fg);
+      background: var(--soft);
+      border-left-color: var(--fg);
+    }
+    .mobile-nav {
+      display: none;
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      margin: 0 -28px;
+      padding: 12px 16px;
+      background: rgba(0,0,0,.94);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(10px);
+      overflow-x: auto;
+      white-space: nowrap;
+      gap: 8px;
+    }
+    .mobile-nav a {
+      display: inline-block;
+      color: var(--muted);
+      text-decoration: none;
+      border: 1px solid var(--line);
+      background: var(--soft-2);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: .78rem;
+      margin-right: 8px;
+    }
+    .mobile-nav a.active { color: var(--fg); border-color: var(--fg); }
+    .main { min-width: 0; }
+    section {
+      padding: 72px 0;
+      border-top: 1px solid var(--line);
+      scroll-margin-top: 72px;
+    }
+    section:first-of-type {
+      border-top: none;
+      padding-top: 44px;
+    }
+    h1, h2, h3, h4 {
+      margin: 0 0 22px;
+      line-height: 1.14;
+      letter-spacing: -.02em;
+    }
+    h1 { font-size: clamp(2.4rem, 5vw, 4rem); }
+    h2 { font-size: clamp(1.8rem, 3vw, 2.5rem); }
+    h3 { font-size: 1.14rem; }
+    h4 { font-size: .96rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+    p { margin: 0 0 16px; }
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      font-size: .74rem;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .cover {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 60px 0 36px;
+    }
+    .top { display: flex; align-items: center; gap: 16px; }
+    .logo { width: 58px; height: 58px; border-radius: 8px; }
+    .brand { font-weight: 700; letter-spacing: .04em; }
+    .brand small { display: block; color: var(--muted); font-weight: 400; letter-spacing: 0; font-size: .8rem; }
+    .subtitle { color: var(--muted); font-size: 1.08rem; max-width: 980px; }
+    .tese {
+      margin-top: 36px;
+      padding: 26px 30px;
+      background: var(--soft);
+      border-left: 3px solid var(--fg);
+      font-size: 1.05rem;
+      font-weight: 500;
+      max-width: 1020px;
+    }
+    .meta, .tiles, .grid2, .grid3, .roadmap {
+      display: grid;
+      gap: 14px;
+    }
+    .meta { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 42px; }
+    .tiles { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); margin-top: 28px; }
+    .grid2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+    .grid3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .roadmap { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-top: 22px; }
+    .card, .tile, .meta .card, .step {
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 22px;
+    }
+    .tile .k {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      font-size: .68rem;
+      margin-bottom: 8px;
+    }
+    .tile .v { font-size: 1.52rem; font-weight: 800; letter-spacing: -.02em; }
+    .tile .f { color: var(--muted); font-size: .88rem; margin-top: 8px; }
+    .meta b { display: block; margin-bottom: 6px; }
+    .meta span { color: var(--muted); font-size: .9rem; }
+    .callout {
+      padding: 18px 22px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--fg);
+      border-radius: 0 4px 4px 0;
+      margin: 18px 0;
+    }
+    .callout.warn { border-left-color: var(--warn); }
+    .callout.good { border-left-color: var(--good); }
+    .callout.blue { border-left-color: var(--blue); }
+    .callout.red { border-left-color: var(--red); }
+    ul.clean { list-style: none; padding: 0; margin: 0; }
+    ul.clean li {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    ul.clean li:last-child { border-bottom: none; }
+    ul.clean li::before { content: "▸"; font-weight: 700; flex-shrink: 0; }
+    blockquote {
+      margin: 18px 0;
+      padding: 20px 24px;
+      background: var(--soft);
+      border-left: 3px solid var(--fg);
+      font-style: italic;
+    }
+    .src {
+      display: block;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: .84rem;
+      font-style: normal;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 22px;
+      font-size: .9rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 14px 16px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--soft);
+      color: var(--muted);
+      text-transform: uppercase;
+      font-size: .7rem;
+      letter-spacing: .1em;
+    }
+    .flow {
+      display: grid;
+      gap: 12px;
+      margin-top: 22px;
+    }
+    .flow .node {
+      display: grid;
+      grid-template-columns: 54px minmax(0,1fr);
+      gap: 16px;
+      padding: 18px 20px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      align-items: start;
+    }
+    .flow .idx {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      border: 1px solid var(--fg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: .84rem;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: .72rem;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .badge.warn { border-color: var(--warn); color: var(--warn); }
+    .badge.good { border-color: var(--good); color: var(--good); }
+    .badge.blue { border-color: var(--blue); color: var(--blue); }
+    .code {
+      margin-top: 16px;
+      padding: 18px 20px;
+      background: var(--soft-2);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      font-size: .86rem;
+      line-height: 1.7;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .step .num { font-size: .74rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: 8px; }
+    footer {
+      padding: 54px 0;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: .84rem;
+    }
+    @media (max-width: 980px) {
+      .layout { grid-template-columns: 1fr; gap: 0; padding: 0 18px; }
+      .sidebar { display: none; }
+      .mobile-nav { display: block; }
+      .meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      section { padding: 48px 0; scroll-margin-top: 80px; }
+    }
+    @media (max-width: 640px) {
+      .meta { grid-template-columns: 1fr; }
+      .flow .node { grid-template-columns: 1fr; }
+      .flow .idx { margin-bottom: 6px; }
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand-mini">
+      <img src="https://s3-us-west-2.amazonaws.com/public.notion-static.com/d67c832a-575e-4228-b43c-f4cc88724610/logo_PJ_ver_final_preta.png" alt="Logo Paulo Jardim">
+      <span>AIC · PRD v2</span>
+    </div>
+    <ol class="toc" id="toc">
+      <li><a href="#sec-cover">00 · Capa</a></li>
+      <li><a href="#sec-contexto">01 · Momento atual</a></li>
+      <li><a href="#sec-frentes">02 · Frentes de produto</a></li>
+      <li><a href="#sec-oportunidade">03 · Oportunidade de governança</a></li>
+      <li><a href="#sec-prd">04 · PRD · objetivo e escopo</a></li>
+      <li><a href="#sec-funcional">05 · Requisitos funcionais</a></li>
+      <li><a href="#sec-stack">06 · Stack e arquitetura</a></li>
+      <li><a href="#sec-fluxo">07 · Fluxo técnico end-to-end</a></li>
+      <li><a href="#sec-dados">08 · Dados, custos e monetização</a></li>
+      <li><a href="#sec-roadmap">09 · Fases e próximos passos</a></li>
+      <li><a href="#sec-decisoes">10 · O que fazer / não fazer</a></li>
+    </ol>
+  </aside>
+
+  <main class="main">
+    <nav class="mobile-nav" id="mobile-nav">
+      <a href="#sec-cover">Capa</a>
+      <a href="#sec-contexto">Momento</a>
+      <a href="#sec-frentes">Frentes</a>
+      <a href="#sec-oportunidade">Oportunidade</a>
+      <a href="#sec-prd">PRD</a>
+      <a href="#sec-funcional">Requisitos</a>
+      <a href="#sec-stack">Stack</a>
+      <a href="#sec-fluxo">Fluxo</a>
+      <a href="#sec-dados">Dados</a>
+      <a href="#sec-roadmap">Fases</a>
+      <a href="#sec-decisoes">Decisões</a>
+    </nav>
+
+    <section id="sec-cover" class="cover">
+      <div class="top">
+        <img class="logo" src="https://s3-us-west-2.amazonaws.com/public.notion-static.com/d67c832a-575e-4228-b43c-f4cc88724610/logo_PJ_ver_final_preta.png" alt="Logo Paulo Jardim">
+        <div class="brand">PAULO JARDIM<small>SeuTimeIA · Flexa · Advisory para AI Constructions</small></div>
+      </div>
+
+      <div>
+        <div class="eyebrow">Direcionamento estratégico + PRD inicial</div>
+        <h1>Governança de IA para Incorporadoras</h1>
+        <p class="subtitle">Documento de trabalho para a AI Constructions consolidando: momento atual do discovery, duas frentes possíveis de produto, oportunidade de governança para DKP e um PRD técnico inicial para um MVP de plataforma interna multi-modelo.</p>
+        <div class="tese">
+          Este documento <strong>não é uma proposta comercial</strong>. É um relatório de direcionamento estratégico e técnico para reduzir ruído, organizar decisões de produto e deixar uma base objetiva caso a AI Constructions decida avançar no MVP da frente de governança de IA.
+        </div>
+        <div class="meta">
+          <div class="card"><b>Contexto</b><span>Período de “entre-safra” com time técnico ativo e discovery em andamento</span></div>
+          <div class="card"><b>Discovery</b><span>Lucas puxando avaliação de frentes de produto para incorporadoras</span></div>
+          <div class="card"><b>Cliente-ambiente</b><span>DKP como campo real para validação e modelagem</span></div>
+          <div class="card"><b>Entregável</b><span>Leitura estratégica + PRD inicial para MVP tecnicamente orientado</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sec-contexto">
+      <div class="eyebrow">01 · Momento atual</div>
+      <h2>O ponto de partida não é “vender uma ideia”. É dar direção para a próxima fase.</h2>
+      <p>A AI Constructions está em um momento que Paulo descreve como <strong>entre-safra</strong>: já existem produtos rodando, o time de desenvolvedores não pode ficar ocioso esperando uma nova frente cair do céu, e o discovery precisa gerar um próximo passo mais factível em prazo curto.</p>
+      <div class="tiles">
+        <div class="tile"><div class="k">Realidade 01</div><div class="v">Time em espera é custo</div><div class="f">Se o discovery não converte em direção objetiva, o time técnico perde tração e aumenta ansiedade operacional.</div></div>
+        <div class="tile"><div class="k">Realidade 02</div><div class="v">Lucas está no centro</div><div class="f">A frente de discovery de produtos, processos e oportunidades precisa sair com material prático, não só conversa boa.</div></div>
+        <div class="tile"><div class="k">Realidade 03</div><div class="v">DKP é laboratório</div><div class="f">O ambiente da DKP pode servir tanto para modelar soluções existentes quanto para validar uma nova camada de governança.</div></div>
+        <div class="tile"><div class="k">Realidade 04</div><div class="v">O documento precisa ser técnico</div><div class="f">Se a frente avançar, o time já precisa de uma base de stack, fluxo, escopo e não-escopo para evitar improviso ruim.</div></div>
+      </div>
+      <div class="callout warn"><strong>Tradução prática:</strong> este material precisa organizar visão, produto e arquitetura. Não é pitch. É instrumento de decisão e execução.</div>
+    </section>
+
+    <section id="sec-frentes">
+      <div class="eyebrow">02 · Frentes de produto</div>
+      <h2>As duas frentes discutidas não competem entre si. Elas respondem a perguntas diferentes.</h2>
+      <div class="grid2">
+        <div class="card">
+          <span class="badge warn">Frente A · modelagem de mercado</span>
+          <h3>Modelar soluções já estabelecidas no nicho</h3>
+          <p>O discovery já está forte em temas como orçamento, suprimentos, projetos, BIM, compatibilização e processos correlatos. A provocação aqui é direta: antes de inventar, por que não contratar, usar e modelar o que já existe?</p>
+          <ul class="clean">
+            <li>usar referências como <strong>AutoQI</strong> e <strong>Suplos</strong> como benchmark vivo</li>
+            <li>entender jornada real de implantação, suporte, comercial e operação</li>
+            <li>capturar o que funciona, o que trava e o que abre espaço para diferenciação</li>
+            <li>dar ao time técnico uma base mais concreta do que vale replicar ou evitar</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="badge good">Frente B · camada ainda mal resolvida</span>
+          <h3>Construir uma plataforma de governança de IA</h3>
+          <p>A segunda frente nasce da percepção de que o mercado já tem soluções maduras em algumas dores da construção, mas ainda não se vê uma camada bem estabelecida para governar o uso corporativo de IA dentro das incorporadoras.</p>
+          <ul class="clean">
+            <li>centralizar GPT, Claude, Gemini e outros em uma plataforma interna</li>
+            <li>bloquear dispersão e trazer governança de uso</li>
+            <li>capturar histórico, dados, custos e padrões de interação</li>
+            <li>transformar uso cotidiano em ativo setorial e base futura de especialização</li>
+          </ul>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Frente</th>
+            <th>Pergunta que responde</th>
+            <th>Entrega esperada no curto prazo</th>
+            <th>Risco</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Modelagem de soluções existentes</td>
+            <td>O que o mercado já resolveu bem e como usar isso a favor do discovery?</td>
+            <td>benchmark, repertório e atalhos de produto</td>
+            <td>ficar preso só a copiar o mercado</td>
+          </tr>
+          <tr>
+            <td>Governança de IA</td>
+            <td>Que camada ainda não está claramente resolvida e pode virar produto defensável?</td>
+            <td>tese de produto + PRD inicial + MVP mais claro</td>
+            <td>subestimar o esforço técnico e de adoção</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout blue"><strong>Ponto de alinhamento:</strong> a Frente A serve para acelerar aprendizado e reduzir chute. A Frente B é a aposta mais autoral e mais estratégica. O documento a seguir aprofunda a Frente B, sem deslegitimar a Frente A.</div>
+    </section>
+
+    <section id="sec-oportunidade">
+      <div class="eyebrow">03 · Oportunidade de governança</div>
+      <h2>A oportunidade não é “mais um chat”. É a camada de governança, memória e dados.</h2>
+      <p>Hoje, colaboradores de incorporadoras já usam IA de forma difusa. A oportunidade é encapsular esse uso em uma plataforma corporativa da empresa, com acesso controlado, seleção de modelos, histórico persistente, observabilidade de custo e dados suficientes para gerar inteligência setorial no tempo.</p>
+      <div class="grid3">
+        <div class="card"><h3>Para a DKP</h3><p>controle, segurança, rastreabilidade, padronização e histórico institucional das interações.</p></div>
+        <div class="card"><h3>Para a AIC</h3><p>um produto replicável em outras incorporadoras sem depender de treinar modelo próprio na largada.</p></div>
+        <div class="card"><h3>Para a evolução futura</h3><p>um dataset crescente de interação humana + modelos fortes dentro do contexto profissional da construção.</p></div>
+      </div>
+      <blockquote>
+        A lógica econômica não é só repassar token. O ativo mais valioso é o acúmulo organizado de interações, contexto, padrões e dados para fases futuras de inteligência.
+        <span class="src">Síntese das falas sobre governança, histórico, custos e uso futuro dos dados</span>
+      </blockquote>
+      <div class="callout good"><strong>Leitura correta:</strong> a empresa investe não apenas para “usar IA”, mas para <strong>usar IA com governança</strong> e converter esse uso em patrimônio informacional.</div>
+    </section>
+
+    <section id="sec-prd">
+      <div class="eyebrow">04 · PRD · objetivo e escopo</div>
+      <h2>PRD inicial — MVP de plataforma interna multi-modelo para incorporadoras</h2>
+      <div class="grid2">
+        <div class="card">
+          <span class="badge">Objetivo do produto</span>
+          <p>Disponibilizar para a DKP uma plataforma interna de uso corporativo de IA, white-label, com acesso centralizado a múltiplos modelos, trilha de auditoria, histórico de sessões, assistentes especializados e base de dados estruturada para evolução futura.</p>
+        </div>
+        <div class="card">
+          <span class="badge">Não-objetivo do MVP</span>
+          <p>Não é objetivo inicial treinar modelo próprio, construir infraestrutura local pesada, prometer automações complexas antes do núcleo rodar ou tentar resolver “IA para construção civil” como categoria total logo no primeiro ciclo.</p>
+        </div>
+      </div>
+
+      <h3>Usuários-alvo do MVP</h3>
+      <ul class="clean">
+        <li>colaboradores internos da DKP autorizados a usar IA em contexto profissional</li>
+        <li>gestores que precisam de visibilidade sobre uso, custo e padrões de adoção</li>
+        <li>administradores da plataforma responsáveis por criar assistentes, políticas e acessos</li>
+        <li>time AIC/DKP que operará discovery, validação e evolução do produto</li>
+      </ul>
+
+      <h3>Problemas que o MVP precisa resolver</h3>
+      <ul class="clean">
+        <li>uso pulverizado de múltiplas IAs sem governança</li>
+        <li>ausência de histórico institucional das conversas</li>
+        <li>impossibilidade de rastrear custo, modelo, área, usuário e volume de uso</li>
+        <li>falta de uma base estruturada para posterior inteligência setorial</li>
+      </ul>
+    </section>
+
+    <section id="sec-funcional">
+      <div class="eyebrow">05 · Requisitos funcionais</div>
+      <h2>O MVP precisa nascer com poucos blocos, mas com blocos certos.</h2>
+
+      <div class="grid2">
+        <div class="card">
+          <h3>RF-01 · Autenticação e controle de acesso</h3>
+          <ul class="clean">
+            <li>login com Google ou provedor corporativo equivalente</li>
+            <li>papéis mínimos: usuário, gestor, administrador</li>
+            <li>gestão de permissões por organização e por perfil</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>RF-02 · Chat multi-modelo</h3>
+          <ul class="clean">
+            <li>interface de conversa estilo chat, já próxima do front inicial mostrado pelo Rafa</li>
+            <li>seleção de modelo por sessão ou por interação</li>
+            <li>modelo default configurável por organização</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>RF-03 · Histórico completo</h3>
+          <ul class="clean">
+            <li>persistir pergunta, resposta, timestamp, usuário, sessão, modelo e custo</li>
+            <li>permitir reabrir sessões anteriores</li>
+            <li>permitir análises futuras por área, usuário e padrão de uso</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>RF-04 · Assistentes especializados</h3>
+          <ul class="clean">
+            <li>cadastro de assistentes baseado em system prompt</li>
+            <li>assistentes individuais ou compartilhados pela organização</li>
+            <li>associação de assistente a modelo padrão, ferramentas e regras</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>RF-05 · Políticas de uso</h3>
+          <ul class="clean">
+            <li>delimitar uso profissional como foco do ambiente</li>
+            <li>restringir ou desencorajar temas fora do escopo corporativo</li>
+            <li>registrar violações ou tentativas recorrentes de uso indevido</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>RF-06 · Observabilidade de custo</h3>
+          <ul class="clean">
+            <li>rastrear tokens de entrada e saída</li>
+            <li>rastrear custo bruto e custo agregado por organização</li>
+            <li>preparar base para precificação por crédito, recorrência ou repasse</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout warn"><strong>Regra de ouro:</strong> se o MVP não nascer guardando sessão, usuário, modelo, tokens e contexto, ele já nasce manco. Sem isso, a frente perde o ativo mais importante: os dados.</div>
+    </section>
+
+    <section id="sec-stack">
+      <div class="eyebrow">06 · Stack e arquitetura</div>
+      <h2>Stack sugerida para o MVP</h2>
+      <div class="grid3">
+        <div class="card"><h3>Frontend</h3><p>Usar o front inicial já desenhado pelo Rafa como base do MVP, evoluindo interface de chat, seletor de modelo, lista de sessões e navegação por assistentes.</p></div>
+        <div class="card"><h3>Backend</h3><p>Python como núcleo. Evitar n8n como espinha dorsal. O backend precisa controlar autenticação, sessão, políticas, observabilidade e integração com modelos.</p></div>
+        <div class="card"><h3>Orquestração agentic</h3><p><strong>Agno</strong> ou equivalente para selecionar modelos, aplicar prompts, memória, contexto e futuras expansões agentic com mais governança.</p></div>
+        <div class="card"><h3>LLM gateway</h3><p><strong>OpenRouter</strong> para texto, com liberdade inicial de modelos; <strong>fal.ai</strong> ou similar para imagem/mídia quando necessário.</p></div>
+        <div class="card"><h3>Auth</h3><p><strong>Supabase Auth</strong> ou solução prática equivalente para login, identidade, papéis e onboarding rápido.</p></div>
+        <div class="card"><h3>Banco de dados</h3><p><strong>PostgreSQL</strong> em instância dedicada, com separação lógica por tenant/schema para DKP e futuros clientes.</p></div>
+      </div>
+
+      <h3>Infraestrutura mínima sugerida</h3>
+      <ul class="clean">
+        <li><strong>VPS 1 · Aplicação:</strong> frontend, backend, gateway de modelos, auth integration, APIs</li>
+        <li><strong>VPS 2 · Banco:</strong> PostgreSQL, logs persistentes, histórico de sessões e metadados</li>
+        <li><strong>Separação:</strong> isolar banco de dados do restante da aplicação para reduzir acoplamento e preparar crescimento</li>
+      </ul>
+
+      <div class="callout blue"><strong>Ponto técnico relevante:</strong> começar em VPS não é fragilidade; é pragmatismo. O erro seria começar pesado demais antes de validar uso e padrão de consumo.</div>
+    </section>
+
+    <section id="sec-fluxo">
+      <div class="eyebrow">07 · Fluxo técnico end-to-end</div>
+      <h2>Como a mensagem precisa percorrer a stack</h2>
+      <div class="flow">
+        <div class="node">
+          <div class="idx">01</div>
+          <div>
+            <h3>Entrada no front</h3>
+            <p>O usuário autenticado acessa a plataforma, escolhe um assistente ou modelo, abre uma sessão e envia a mensagem. O front já deve carregar contexto mínimo da organização, usuário e sessão.</p>
+          </div>
+        </div>
+        <div class="node">
+          <div class="idx">02</div>
+          <div>
+            <h3>Camada de autenticação e autorização</h3>
+            <p>O backend valida token do usuário, organização, papel, limites de acesso e permissões daquele assistente/modelo.</p>
+          </div>
+        </div>
+        <div class="node">
+          <div class="idx">03</div>
+          <div>
+            <h3>Resolução de contexto de sessão</h3>
+            <p>O backend recupera sessão atual, memória contextual pertinente, histórico recente e metadados relevantes: tenant, área, cargo, assistente, limites e política de uso.</p>
+          </div>
+        </div>
+        <div class="node">
+          <div class="idx">04</div>
+          <div>
+            <h3>Roteamento de modelo</h3>
+            <p>A camada Agno/orquestradora define qual modelo responderá naquela interação — seja o default da organização, o do assistente, ou o explicitamente escolhido pelo usuário.</p>
+          </div>
+        </div>
+        <div class="node">
+          <div class="idx">05</div>
+          <div>
+            <h3>Enriquecimento do prompt</h3>
+            <p>Antes da chamada ao modelo, o sistema compõe a carga final: system prompt do assistente, política organizacional, contexto da sessão, janelas de memória e mensagem do usuário.</p>
+          </div>
+        </div>
+        <div class="node">
+          <div class="idx">06</div>
+          <div>
+            <h3>Chamada ao provedor</h3>
+            <p>O backend chama OpenRouter ou provedor equivalente, recebe a resposta do modelo, captura tokens, tempo, custo e eventuais erros.</p>
+          </div>
+        </div>
+        <div class="node">
+          <div class="idx">07</div>
+          <div>
+            <h3>Persistência e observabilidade</h3>
+            <p>Antes de responder ao front, o sistema persiste pergunta, resposta, modelo, custo, latência, sessão, usuário, tenant e tags úteis para análise futura.</p>
+          </div>
+        </div>
+        <div class="node">
+          <div class="idx">08</div>
+          <div>
+            <h3>Retorno ao usuário</h3>
+            <p>O front renderiza a resposta, atualiza o histórico da sessão e mantém a experiência o mais próxima possível de produtos como ChatGPT ou Gemini — mas agora com governança corporativa.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="code">USUÁRIO → FRONT → AUTH/PERMISSÃO → CONTEXTO/SESSÃO → AGNO/ROTEAMENTO → OPENROUTER/FAL → RESPOSTA → PERSISTÊNCIA (POSTGRES) → OBSERVABILIDADE/CUSTO → FRONT</div>
+    </section>
+
+    <section id="sec-dados">
+      <div class="eyebrow">08 · Dados, custos e monetização</div>
+      <h2>O custo visível é token. O valor invisível é o dataset.</h2>
+      <div class="grid2">
+        <div class="card">
+          <span class="badge">Dados mínimos a persistir</span>
+          <ul class="clean">
+            <li>tenant / organização</li>
+            <li>usuário, cargo e área</li>
+            <li>sessão e assistente utilizados</li>
+            <li>modelo selecionado</li>
+            <li>prompt, resposta e timestamps</li>
+            <li>tokens, custo bruto, latência e status da chamada</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="badge">Lógica econômica possível</span>
+          <ul class="clean">
+            <li>repasse puro de token + margem</li>
+            <li>crédito pré-pago por organização</li>
+            <li>mensalidade de plataforma + consumo variável</li>
+            <li>modelo híbrido: recorrência + pacote de uso</li>
+          </ul>
+        </div>
+      </div>
+      <p>Mas reduzir essa frente a “revenda de token” seria miopia. O diferencial é que a plataforma passa a concentrar um histórico setorial que pode, no futuro, alimentar RAG, heurísticas próprias, fine-tuning, modelos locais ou camadas de otimização por perfil.</p>
+      <div class="callout good"><strong>Tese estratégica:</strong> na fase 1, o token financia a operação. Na fase 2, os dados justificam a inteligência. Na fase 3, essa inteligência pode virar margem, diferenciação e produto setorial.</div>
+    </section>
+
+    <section id="sec-roadmap">
+      <div class="eyebrow">09 · Fases e próximos passos</div>
+      <h2>Sequência sugerida para tirar isso do discurso e levar para execução</h2>
+      <div class="roadmap">
+        <div class="step"><div class="num">Fase 01</div><h3>Fechar tese e escopo</h3><p>Confirmar que a frente de governança entra como aposta estratégica do discovery, com recorte claro de MVP, usuários e dados mínimos.</p></div>
+        <div class="step"><div class="num">Fase 02</div><h3>Modelar referências de mercado</h3><p>Usar DKP para avaliar soluções como AutoQI e Suplos, documentando aprendizados úteis ao produto e ao discovery.</p></div>
+        <div class="step"><div class="num">Fase 03</div><h3>Arquitetura + PRD detalhado</h3><p>Transformar esta base em backlog técnico: telas, APIs, entidades, políticas, integrações e critérios de aceite do MVP.</p></div>
+        <div class="step"><div class="num">Fase 04</div><h3>Prototipação funcional</h3><p>Conectar o front já existente ao backend, auth, roteamento de modelo e persistência das sessões.</p></div>
+        <div class="step"><div class="num">Fase 05</div><h3>Piloto interno DKP</h3><p>Rodar com grupo controlado, forçando uso real da plataforma para capturar custo, comportamento e fricções.</p></div>
+        <div class="step"><div class="num">Fase 06</div><h3>Leitura de dados + próxima decisão</h3><p>Avaliar adoção, gargalos, padrão de consumo, assistentes úteis e viabilidade de expansão para outras incorporadoras.</p></div>
+      </div>
+    </section>
+
+    <section id="sec-decisoes">
+      <div class="eyebrow">10 · O que fazer / não fazer</div>
+      <h2>Decisões que protegem o produto</h2>
+      <div class="grid2">
+        <div class="card">
+          <span class="badge good">Fazer</span>
+          <ul class="clean">
+            <li>tratar DKP como ambiente real de aprendizado e validação</li>
+            <li>usar referências de mercado para reduzir chute no discovery</li>
+            <li>nascer com histórico, custo, sessão e governança como núcleo</li>
+            <li>manter arquitetura explicável, em código, e preparada para multi-tenant</li>
+            <li>deixar claro o recorte do MVP e o que fica para fases futuras</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="badge warn">Não fazer</span>
+          <ul class="clean">
+            <li>começar por modelo próprio ou fine-tuning como fase zero</li>
+            <li>usar n8n como coração do produto</li>
+            <li>confundir prova de conceito com produto replicável</li>
+            <li>deixar o time técnico sem direcionamento claro enquanto o discovery se alonga</li>
+            <li>subestimar o valor estratégico dos dados e tratar tudo como simples repasse de token</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout red"><strong>Elefante na sala:</strong> se a AI Constructions tentar parecer sofisticada demais cedo demais, corre o risco clássico de queimar energia em engenharia prematura. O caminho mais lúcido é: governança → uso real → dados → inteligência → especialização.</div>
+      <footer>
+        Documento consolidado a partir dos alinhamentos estratégicos de 26/08/2026 sobre AI Constructions, DKP, discovery com Lucas e visão de produto para governança de IA em incorporadoras. Versão HTML V2 para GitHub Pages.
+      </footer>
+    </section>
+  </main>
+</div>
+
+<script>
+  const linkSets = [
+    ...document.querySelectorAll('#toc a'),
+    ...document.querySelectorAll('#mobile-nav a')
+  ];
+  const sectionIds = [...new Set(linkSets.map(a => a.getAttribute('href')))];
+  const sections = sectionIds.map(id => document.querySelector(id)).filter(Boolean);
+
+  const activate = (id) => {
+    linkSets.forEach(link => {
+      const on = link.getAttribute('href') === id;
+      link.classList.toggle('active', on);
+    });
+  };
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) activate('#' + entry.target.id);
+    });
+  }, { rootMargin: '-30% 0px -55% 0px', threshold: 0.01 });
+
+  sections.forEach(sec => obs.observe(sec));
+</script>
+</body>
+</html>
