@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visão Estratégica | Governança de IA para Incorporadoras</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #000;
+      --fg: #fff;
+      --muted: #a3a3a3;
+      --line: #1f1f1f;
+      --soft: #141414;
+      --soft-2: #0f0f0f;
+      --accent: #ffffff;
+      --warn: #f4b400;
+      --good: #79c97a;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: "Montserrat", -apple-system, system-ui, sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      scroll-behavior: smooth;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      gap: 56px;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+    .sidebar {
+      position: sticky;
+      top: 0;
+      align-self: start;
+      height: 100vh;
+      overflow-y: auto;
+      padding: 32px 16px 32px 0;
+      border-right: 1px solid var(--line);
+      font-size: 0.88rem;
+    }
+    .brand-mini {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 20px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+    }
+    .brand-mini img { width: 28px; height: 28px; border-radius: 4px; }
+    .toc { list-style: none; padding: 0; margin: 0; }
+    .toc li { padding: 2px 0; }
+    .toc a {
+      display: block;
+      padding: 8px 12px;
+      color: var(--muted);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      transition: all .15s ease;
+      border-radius: 0 2px 2px 0;
+    }
+    .toc a:hover, .toc a.active { color: var(--fg); background: var(--soft); border-left-color: var(--fg); }
+    .main { min-width: 0; }
+    section { padding: 72px 0; border-top: 1px solid var(--line); scroll-margin-top: 24px; }
+    section:first-of-type { border-top: none; padding-top: 48px; }
+    h1, h2, h3 { margin: 0 0 22px; line-height: 1.15; letter-spacing: -0.02em; }
+    h1 { font-size: clamp(2.4rem, 5vw, 4rem); }
+    h2 { font-size: clamp(1.8rem, 3vw, 2.5rem); }
+    h3 { font-size: 1.1rem; }
+    p { margin: 0 0 16px; }
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .cover {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 64px 0;
+    }
+    .top { display: flex; align-items: center; gap: 16px; }
+    .logo { width: 56px; height: 56px; border-radius: 8px; }
+    .brand { font-weight: 700; letter-spacing: 0.04em; }
+    .brand small { display: block; color: var(--muted); font-weight: 400; letter-spacing: 0; font-size: .8rem; }
+    .subtitle { color: var(--muted); font-size: 1.1rem; max-width: 860px; }
+    .tese {
+      margin-top: 40px;
+      padding: 28px 32px;
+      border-left: 3px solid var(--fg);
+      background: var(--soft);
+      font-size: 1.08rem;
+      font-weight: 500;
+      max-width: 980px;
+    }
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 18px;
+      margin-top: 48px;
+    }
+    .meta .card, .card, .tile {
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+    }
+    .meta .card { padding: 18px 20px; }
+    .meta b { display: block; margin-bottom: 6px; }
+    .meta span { color: var(--muted); font-size: .92rem; }
+    .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin-top: 28px; }
+    .tile { padding: 22px; }
+    .tile .k { color: var(--muted); text-transform: uppercase; letter-spacing: .1em; font-size: .68rem; margin-bottom: 8px; }
+    .tile .v { font-size: 1.55rem; font-weight: 800; letter-spacing: -0.02em; }
+    .tile .f { color: var(--muted); font-size: .88rem; margin-top: 10px; }
+    .callout {
+      padding: 18px 22px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--fg);
+      border-radius: 0 4px 4px 0;
+      margin: 16px 0;
+    }
+    .grid2, .grid3 { display: grid; gap: 14px; }
+    .grid2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+    .grid3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .card { padding: 22px; }
+    .card p:last-child { margin-bottom: 0; }
+    ul.clean { list-style: none; padding: 0; margin: 0; }
+    ul.clean li {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    ul.clean li:last-child { border-bottom: none; }
+    ul.clean li::before { content: "▸"; font-weight: 700; flex-shrink: 0; }
+    .duas-frentes .card:first-child { border-left: 3px solid var(--warn); }
+    .duas-frentes .card:last-child { border-left: 3px solid var(--good); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: .9rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 14px 16px;
+      vertical-align: top;
+      text-align: left;
+    }
+    th {
+      background: var(--soft);
+      color: var(--muted);
+      text-transform: uppercase;
+      font-size: .7rem;
+      letter-spacing: .1em;
+    }
+    blockquote {
+      margin: 18px 0;
+      padding: 20px 24px;
+      border-left: 3px solid var(--fg);
+      background: var(--soft);
+      font-style: italic;
+    }
+    .src { display: block; margin-top: 8px; color: var(--muted); font-size: .85rem; font-style: normal; }
+    footer {
+      padding: 56px 0;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: .85rem;
+    }
+    @media (max-width: 920px) {
+      .layout { grid-template-columns: 1fr; gap: 0; padding: 0 24px; }
+      .sidebar {
+        position: relative;
+        height: auto;
+        max-height: 50vh;
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+        padding: 16px 0;
+      }
+      .meta { grid-template-columns: 1fr 1fr; }
+      section { padding: 48px 0; }
+    }
+    @media (max-width: 640px) {
+      .meta { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand-mini">
+      <img src="https://s3-us-west-2.amazonaws.com/public.notion-static.com/d67c832a-575e-4228-b43c-f4cc88724610/logo_PJ_ver_final_preta.png" alt="Logo Paulo Jardim">
+      <span>Visão @aic</span>
+    </div>
+    <ol class="toc" id="toc">
+      <li><a href="#sec-cover">00 · Capa</a></li>
+      <li><a href="#sec-contexto">01 · Contexto</a></li>
+      <li><a href="#sec-oportunidade">02 · Oportunidade</a></li>
+      <li><a href="#sec-tese">03 · Tese do Produto</a></li>
+      <li><a href="#sec-frentes">04 · Duas Frentes Estratégicas</a></li>
+      <li><a href="#sec-mvp">05 · Diretrizes do MVP</a></li>
+      <li><a href="#sec-arquitetura">06 · Premissas Técnicas</a></li>
+      <li><a href="#sec-comercial">07 · Tese Comercial</a></li>
+      <li><a href="#sec-passos">08 · Próximos Passos</a></li>
+    </ol>
+  </aside>
+
+  <main class="main">
+    <section id="sec-cover" class="cover">
+      <div class="top">
+        <img class="logo" src="https://s3-us-west-2.amazonaws.com/public.notion-static.com/d67c832a-575e-4228-b43c-f4cc88724610/logo_PJ_ver_final_preta.png" alt="Logo Paulo Jardim">
+        <div class="brand">PAULO JARDIM<small>SeuTimeIA · Flexa · AI Constructions</small></div>
+      </div>
+      <div>
+        <div class="eyebrow">Documento Estratégico</div>
+        <h1>Visão Estratégica — Plataforma de Governança de IA para Incorporadoras</h1>
+        <p class="subtitle">Base executiva para aprofundar com a AI Constructions a oportunidade de transformar o uso disperso de IA em uma plataforma corporativa governada, replicável e economicamente escalável.</p>
+        <div class="tese">
+          A oportunidade mais forte agora não é começar por modelo próprio. É começar por <strong>governança</strong>: uma plataforma white-label, multi-modelo, com histórico, rastreabilidade, controle de acesso e base proprietária de dados para incorporadoras.
+        </div>
+        <div class="meta">
+          <div class="card"><b>Cliente inicial</b><span>DKP como ambiente de validação real</span></div>
+          <div class="card"><b>Estratégia central</b><span>Governança primeiro, especialização depois</span></div>
+          <div class="card"><b>Arquitetura-alvo</b><span>White-label + multi-tenant + multi-modelo</span></div>
+          <div class="card"><b>Resultado esperado</b><span>Ativo replicável para outras incorporadoras</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sec-contexto">
+      <div class="eyebrow">01 · Contexto</div>
+      <h2>O uso de IA já existe. O que falta é governança.</h2>
+      <p>Nas empresas, a IA já entrou pela porta do cotidiano: ChatGPT, Claude, Gemini e outros modelos já são usados por times técnicos, administrativos e operacionais. O problema não é adoção. O problema é que essa adoção acontece de forma pulverizada, invisível e sem controle corporativo.</p>
+      <div class="tiles">
+        <div class="tile"><div class="k">DOR 01</div><div class="v">Uso disperso</div><div class="f">Cada colaborador usa ferramentas diferentes, sem padronização e sem inteligência comum.</div></div>
+        <div class="tile"><div class="k">DOR 02</div><div class="v">Sem memória</div><div class="f">As interações geram valor, mas esse valor não vira ativo organizacional.</div></div>
+        <div class="tile"><div class="k">DOR 03</div><div class="v">Sem rastreio</div><div class="f">A empresa não sabe quem usou o quê, com qual custo, em qual contexto e com qual retorno.</div></div>
+        <div class="tile"><div class="k">DOR 04</div><div class="v">Risco oculto</div><div class="f">Contexto estratégico, operacional e sensível sai da empresa sem governança real.</div></div>
+      </div>
+      <div class="callout"><strong>Ponto central:</strong> a pergunta não é se a empresa vai usar IA. Ela já usa. A pergunta correta é se ela vai continuar usando de forma desgovernada ou se vai transformar esse uso em ativo estratégico.</div>
+    </section>
+
+    <section id="sec-oportunidade">
+      <div class="eyebrow">02 · Oportunidade</div>
+      <h2>Há uma oportunidade mais valiosa do que “mais um chat”</h2>
+      <p>O ativo real não é apenas entregar respostas de IA. O ativo real é construir a camada de governança, histórico, captura de dados e observabilidade sobre esse uso.</p>
+      <div class="grid2">
+        <div class="card">
+          <h3>O que a empresa compra</h3>
+          <ul class="clean">
+            <li>segurança de uso e centralização</li>
+            <li>histórico institucional das interações</li>
+            <li>rastreabilidade de usuário, modelo, sessão e custo</li>
+            <li>assistentes especializados por contexto de negócio</li>
+            <li>uma plataforma com identidade da própria empresa</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>O que a plataforma acumula</h3>
+          <ul class="clean">
+            <li>dados sobre como cada área usa IA no dia a dia</li>
+            <li>padrões de demanda, gargalos e oportunidades</li>
+            <li>base futura para inteligência setorial e especialização</li>
+            <li>evidência real para precificação, produto e expansão</li>
+            <li>um ativo replicável para múltiplos clientes</li>
+          </ul>
+        </div>
+      </div>
+      <blockquote>
+        “A venda não é mais um chat com IA. A venda é governança corporativa de IA.”
+        <span class="src">Tese executiva consolidada a partir da conversa com a AI Constructions</span>
+      </blockquote>
+    </section>
+
+    <section id="sec-tese">
+      <div class="eyebrow">03 · Tese do Produto</div>
+      <h2>Governança primeiro. Modelo próprio depois.</h2>
+      <p>A direção mais inteligente para o MVP é começar com modelos maduros via API e capturar valor sobre a camada de uso, não tentar nascer com infraestrutura pesada, fine-tuning e promessa de IA setorial proprietária antes de validar comportamento real.</p>
+      <div class="grid3">
+        <div class="card"><h3>White-label</h3><p>Uma plataforma com marca, interface e linguagem da própria incorporadora.</p></div>
+        <div class="card"><h3>Multi-modelo</h3><p>Acesso centralizado a GPT, Claude, Gemini e outros por API, com governança.</p></div>
+        <div class="card"><h3>Histórico</h3><p>Persistência completa de sessões, prompts, respostas, custos e padrões de uso.</p></div>
+        <div class="card"><h3>Assistentes</h3><p>Perfis especializados por system prompt, equipe, área ou necessidade de negócio.</p></div>
+        <div class="card"><h3>Multi-tenant</h3><p>Arquitetura pronta para replicação segura entre clientes distintos.</p></div>
+        <div class="card"><h3>Ativo de dados</h3><p>Base real para inteligência setorial, otimização e especialização futura.</p></div>
+      </div>
+      <div class="callout"><strong>Erro a evitar:</strong> inverter a ordem. Começar por modelo próprio agora é vaidade técnica. O caminho correto é concentrar uso, aprender com o uso e só depois decidir onde vale especializar.</div>
+    </section>
+
+    <section id="sec-frentes" class="duas-frentes">
+      <div class="eyebrow">04 · Duas Frentes Estratégicas</div>
+      <h2>Há dois movimentos complementares — e não concorrentes</h2>
+      <div class="grid2">
+        <div class="card">
+          <h3>Frente 1 · Modelar o que já existe no mercado</h3>
+          <p>Há categorias com soluções já estruturadas em construção civil — por exemplo, suprimentos, compatibilização, projetos, BIM e fluxos específicos. Aqui a lógica estratégica é simples: observar, contratar, usar, entender jornada, copiar o que funciona e identificar lacunas reais.</p>
+          <p>Essa frente acelera repertório, encurta aprendizagem e evita desperdiçar time recriando às cegas algo que já existe.</p>
+        </div>
+        <div class="card">
+          <h3>Frente 2 · Construir a camada que ainda não está bem resolvida</h3>
+          <p>A oportunidade mais promissora parece estar na camada de governança corporativa de IA para incorporadoras: um “adapter interno” que centraliza modelos, bloqueia dispersão, organiza acesso, guarda histórico e transforma uso em ativo.</p>
+          <p>Esse caminho é mais ousado, mas também mais defensável, mais replicável e com potencial comercial superior.</p>
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Frente</th>
+            <th>Lógica</th>
+            <th>Ganho</th>
+            <th>Risco</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Referências existentes</td>
+            <td>Aprender com soluções prontas e jornadas consolidadas</td>
+            <td>Velocidade de aprendizado e benchmark real</td>
+            <td>Virar revenda mental do mercado</td>
+          </tr>
+          <tr>
+            <td>Governança de IA</td>
+            <td>Criar a camada de uso corporativo com histórico e inteligência</td>
+            <td>Diferenciação, dados, recorrência e replicabilidade</td>
+            <td>Maior esforço de produto e adoção</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="sec-mvp">
+      <div class="eyebrow">05 · Diretrizes do MVP</div>
+      <h2>O MVP precisa ser sério, mas recortado.</h2>
+      <div class="grid2">
+        <div class="card">
+          <h3>O que o MVP deve ter</h3>
+          <ul class="clean">
+            <li>chat corporativo multi-modelo</li>
+            <li>autenticação e gestão de acessos</li>
+            <li>persistência de sessões e interações</li>
+            <li>rastreio de tokens, custos e modelos</li>
+            <li>assistentes especializados por prompt</li>
+            <li>guardrails de uso profissional</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>O que o MVP não deve tentar ser</h3>
+          <ul class="clean">
+            <li>modelo próprio de construção civil</li>
+            <li>infraestrutura local complexa</li>
+            <li>fábrica de agentes excessiva logo na largada</li>
+            <li>produto gratuito em massa</li>
+            <li>automação periférica antes do núcleo funcionar</li>
+            <li>promessa inflada sem adoção real</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout"><strong>MVP não é gambiarra.</strong> MVP é recorte inteligente. A ambição continua grande, mas o primeiro passo precisa ser executável.</div>
+    </section>
+
+    <section id="sec-arquitetura">
+      <div class="eyebrow">06 · Premissas Técnicas</div>
+      <h2>As decisões técnicas precisam proteger escalabilidade, não encenar sofisticação.</h2>
+      <div class="grid3">
+        <div class="card"><h3>Infra mínima</h3><p>Duas VPSs: uma para aplicação e outra para banco de dados, separando responsabilidades e preparando crescimento.</p></div>
+        <div class="card"><h3>Banco multi-tenant</h3><p>Segregação por schemas ou equivalente para DKP e futuros clientes, evitando retrabalho estrutural.</p></div>
+        <div class="card"><h3>Frontend white-label</h3><p>Marca, cores, nome e elementos configuráveis por cliente. Isso é parte do produto, não acabamento.</p></div>
+        <div class="card"><h3>Modelos via API</h3><p>OpenRouter para texto e fal.ai ou equivalente para mídia, permitindo troca de modelos com baixo atrito.</p></div>
+        <div class="card"><h3>Auth pragmático</h3><p>Supabase Auth ou camada equivalente para acelerar identidade, login e controle de acesso.</p></div>
+        <div class="card"><h3>Núcleo em código</h3><p>Python + Agno ou estrutura similar. n8n pode apoiar automações táticas, mas não deve ser a espinha dorsal do produto.</p></div>
+      </div>
+    </section>
+
+    <section id="sec-comercial">
+      <div class="eyebrow">07 · Tese Comercial</div>
+      <h2>O valor comercial está na combinação entre governança, dados e replicação.</h2>
+      <p>Ao centralizar o uso de IA dentro de uma plataforma corporativa, a empresa contratante passa a ter mais controle, mais segurança e mais inteligência gerencial. Ao mesmo tempo, a solução ganha um ativo adicional: dados estruturados de uso, comportamento e demanda.</p>
+      <div class="grid2">
+        <div class="card">
+          <h3>Para a incorporadora</h3>
+          <p>Ela paga por uma plataforma própria, com governança, histórico, visibilidade e ganho de produtividade. Em vez de depender de ferramentas soltas e invisíveis, passa a operar com uma camada única e controlada.</p>
+        </div>
+        <div class="card">
+          <h3>Para a operação do produto</h3>
+          <p>Essa mesma camada gera dados suficientes para otimizar custo, entender uso real, criar inteligência setorial e replicar o modelo para outros incorporadores com baixo custo marginal relativo.</p>
+        </div>
+      </div>
+      <blockquote>
+        O argumento comercial não é “vamos substituir a IA que vocês já usam”. O argumento é: “vocês já usam IA; agora vão usar com governança, segurança e inteligência”.
+      </blockquote>
+    </section>
+
+    <section id="sec-passos">
+      <div class="eyebrow">08 · Próximos Passos</div>
+      <h2>Sequência recomendada para avançar com o MVP</h2>
+      <div class="grid2">
+        <div class="card">
+          <h3>Etapa 1 · Definição de escopo</h3>
+          <ul class="clean">
+            <li>público inicial e quantidade de usuários</li>
+            <li>modelos habilitados e limites de uso</li>
+            <li>assistentes especializados prioritários</li>
+            <li>política de uso e dados a persistir</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Etapa 2 · Desenho técnico</h3>
+          <ul class="clean">
+            <li>fluxo frontend → backend → modelos → banco</li>
+            <li>estrutura multi-tenant</li>
+            <li>auth, trilha de auditoria e rastreio de custo</li>
+            <li>fronteiras claras entre MVP e visão futura</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Etapa 3 · Prototipação funcional</h3>
+          <ul class="clean">
+            <li>conectar front existente ao backend</li>
+            <li>integrar OpenRouter</li>
+            <li>salvar sessões e histórico</li>
+            <li>habilitar seleção de modelo e logs mínimos</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Etapa 4 · Piloto e medição</h3>
+          <ul class="clean">
+            <li>rodar com grupo controlado na DKP</li>
+            <li>medir adoção, custo e padrões de uso</li>
+            <li>identificar gargalos técnicos e oportunidades</li>
+            <li>decidir a próxima camada com base em evidência</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout"><strong>Conclusão executiva:</strong> se a DKP concentrar o uso de IA em uma plataforma corporativa própria, com histórico, governança, multi-modelo e base de dados estruturada, ela cria um ativo de valor operacional e comercial. Esse ativo pode depois evoluir para especialização. Inverter essa ordem agora só atrasaria.</div>
+    </section>
+
+    <footer>
+      Documento gerado para AI Constructions a partir de alinhamentos estratégicos de 26/08/2026 · Paulo Jardim / Flexa / SeuTimeIA
+    </footer>
+  </main>
+</div>
+<script>
+  const links = [...document.querySelectorAll('#toc a')];
+  const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const id = '#' + entry.target.id;
+      const link = links.find(a => a.getAttribute('href') === id);
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-35% 0px -55% 0px', threshold: 0.01 });
+  sections.forEach(sec => obs.observe(sec));
+</script>
+</body>
+</html>
