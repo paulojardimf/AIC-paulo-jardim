@@ -205,6 +205,23 @@
     }
     ul.clean li:last-child { border-bottom: none; }
     ul.clean li::before { content: "▸"; font-weight: 700; flex-shrink: 0; }
+    ul.clean li > span { min-width: 0; display: block; }
+    .refs {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px dashed var(--line);
+    }
+    .refs h4 {
+      margin-bottom: 10px;
+    }
+    .refs a {
+      color: var(--blue);
+      text-decoration: none;
+      word-break: break-word;
+    }
+    .refs a:hover {
+      text-decoration: underline;
+    }
     blockquote {
       margin: 18px 0;
       padding: 20px 24px;
@@ -392,21 +409,28 @@
           <h3>Modelar soluções já estabelecidas no nicho</h3>
           <p>O discovery já está forte em temas como orçamento, suprimentos, projetos, BIM, compatibilização e processos correlatos. A provocação aqui é direta: antes de inventar, por que não contratar, usar e modelar o que já existe?</p>
           <ul class="clean">
-            <li>usar referências como <strong>AutoQI</strong> e <strong>Suplos</strong> como benchmark vivo</li>
-            <li>entender jornada real de implantação, suporte, comercial e operação</li>
-            <li>capturar o que funciona, o que trava e o que abre espaço para diferenciação</li>
-            <li>dar ao time técnico uma base mais concreta do que vale replicar ou evitar</li>
+            <li><span>usar referências como <strong>AutoQI</strong> e <strong>Suplos</strong> como benchmark vivo</span></li>
+            <li><span>entender jornada real de implantação, suporte, comercial e operação</span></li>
+            <li><span>capturar o que funciona, o que trava e o que abre espaço para diferenciação</span></li>
+            <li><span>dar ao time técnico uma base mais concreta do que vale replicar ou evitar</span></li>
           </ul>
+          <div class="refs">
+            <h4>Referências sugeridas</h4>
+            <ul class="clean">
+              <li><span><a href="https://www.altoqi.com.br/home" target="_blank" rel="noopener noreferrer">AltoQi — https://www.altoqi.com.br/home</a></span></li>
+              <li><span><a href="https://www.suplos.com.br/" target="_blank" rel="noopener noreferrer">Suplos — https://www.suplos.com.br/</a></span></li>
+            </ul>
+          </div>
         </div>
         <div class="card">
           <span class="badge good">Frente B · camada ainda mal resolvida</span>
           <h3>Construir uma plataforma de governança de IA</h3>
           <p>A segunda frente nasce da percepção de que o mercado já tem soluções maduras em algumas dores da construção, mas ainda não se vê uma camada bem estabelecida para governar o uso corporativo de IA dentro das incorporadoras.</p>
           <ul class="clean">
-            <li>centralizar GPT, Claude, Gemini e outros em uma plataforma interna</li>
-            <li>bloquear dispersão e trazer governança de uso</li>
-            <li>capturar histórico, dados, custos e padrões de interação</li>
-            <li>transformar uso cotidiano em ativo setorial e base futura de especialização</li>
+            <li><span>centralizar GPT, Claude, Gemini e outros em uma plataforma interna</span></li>
+            <li><span>bloquear dispersão e trazer governança de uso</span></li>
+            <li><span>capturar histórico, dados, custos e padrões de interação</span></li>
+            <li><span>transformar uso cotidiano em ativo setorial e base futura de especialização</span></li>
           </ul>
         </div>
       </div>
